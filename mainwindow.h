@@ -37,8 +37,9 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
 
 public slots:
+    void onAlgorithmChange(int index);
     void onShowStepsToggled(int state);
     void onAllowDiagonalToggled(int state);
-    void onClearButtonPressed();
+    void onButtonClicked();
 };
 #endif // MAINWINDOW_H

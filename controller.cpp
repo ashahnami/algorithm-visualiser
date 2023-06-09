@@ -9,8 +9,8 @@ Controller::Controller(QWidget *parent)
     layout -> setHorizontalSpacing(5);
 
     algorithmDropdown = new QComboBox(this);
-    algorithmDropdown -> addItem("A* Algorithm");
-    algorithmDropdown -> addItem("Dijkstra's Algorithm");
+    algorithmDropdown -> insertItem(0, "A* Algorithm");
+    algorithmDropdown -> insertItem(1, "Dijkstra's Algorithm");
     layout -> addWidget(algorithmDropdown, 0, 0);
 
     showStepsCheckbox = new QCheckBox("Show Steps", this);
@@ -27,7 +27,8 @@ Controller::Controller(QWidget *parent)
     setLayout(layout);
 }
 
-void Controller::paintEvent(QPaintEvent *event){
+void Controller::paintEvent(QPaintEvent *event)
+{
     QPainter painter(this);
 
     QRect rect(5, 5, width()-10, height()-10);

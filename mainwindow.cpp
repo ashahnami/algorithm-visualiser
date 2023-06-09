@@ -14,13 +14,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     controller = new Controller(this);
     controller -> setMinimumSize(220, 100);
+
+    connect(controller->algorithmDropdown, &QComboBox::currentIndexChanged, this, &MainWindow::onAlgorithmChange);
+    connect(controller->showStepsCheckbox, &QCheckBox::stateChanged, this, &MainWindow::onShowStepsToggled);
+    connect(controller->allowDiagonalCheckbox, &QCheckBox::stateChanged, this, &MainWindow::onAllowDiagonalToggled);
+    connect(controller->pushButton, &QPushButton::clicked, this, &::MainWindow::onButtonClicked);
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::paintEvent(QPaintEvent *event){
+void MainWindow::paintEvent(QPaintEvent *event)
+{
     QPainter painter(this);
 
     int squareSize = 25 * zoomLevel;
@@ -66,7 +72,8 @@ void MainWindow::paintEvent(QPaintEvent *event){
     QWidget::paintEvent(event);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event){
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
     currKey = event -> key();
     if(currKey == Qt::Key_Space){
         pathfinding -> start(*start, *end);
@@ -74,30 +81,35 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     QWidget::keyPressEvent(event);
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent *event){
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
     currKey = 0;
     QWidget::keyReleaseEvent(event);
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event){
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
     drawing = true;
     handleDrawing(event);
     QWidget::mousePressEvent(event);
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event){
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
     if(rect().contains(event -> pos())){
         handleDrawing(event);
     }
     QWidget::mouseMoveEvent(event);
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event){
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
     drawing = false;
     QWidget::mouseReleaseEvent(event);
 }
 
-void MainWindow::wheelEvent(QWheelEvent *event){
+void MainWindow::wheelEvent(QWheelEvent *event)
+{
     const double zoomFactor = 1.2;
     int numDegrees = event -> angleDelta().y() / 8;
     int numSteps = numDegrees / 15;
@@ -113,20 +125,33 @@ void MainWindow::wheelEvent(QWheelEvent *event){
     update();
 }
 
-void MainWindow::onShowStepsToggled(int state){
+void MainWindow::onAlgorithmChange(int index)
+{
+    qDebug() << "Algorithm number" << (index==0 ? "1" : "2") << "selected";
+}
+
+void MainWindow::onShowStepsToggled(int state)
+{
     pathfinding->showSteps = state == 2 ? true : false;
+    qDebug() << "show steps toggled";
+    setFocus();
 }
 
-void MainWindow::onAllowDiagonalToggled(int state){
+void MainWindow::onAllowDiagonalToggled(int state)
+{
     pathfinding->diagMove = state == 2 ? true : false;
+    qDebug() << "allow diagonal toggled";
+    setFocus();
 }
 
-void MainWindow::onClearButtonPressed(){
+void MainWindow::onButtonClicked()
+{
     pathfinding -> reset();
+    setFocus();
 }
 
-void MainWindow::handleDrawing(QMouseEvent *event){
-
+void MainWindow::handleDrawing(QMouseEvent *event)
+{
     int squareSize = 25 * zoomLevel;
     QPoint pos = event -> pos();
     int x = pos.x() / squareSize;
