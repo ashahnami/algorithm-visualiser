@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "astar.h"
+#include "controller.h"
 #include "node.h"
 #include "qpainter.h"
 #include <QMouseEvent>
@@ -21,6 +22,7 @@ public:
     bool drawing;
     int currKey;
     void startSearch();
+    Controller *controller;
     AStar *pathfinding;
     double zoomLevel = 1;
     QPainter painter;

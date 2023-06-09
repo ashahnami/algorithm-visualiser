@@ -5,17 +5,15 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-
     setFixedSize(700, 600);
+    setFocus();
 
     pathfinding = new AStar(this);
     start = &pathfinding->gridNodes[0][0];
     end = &pathfinding->gridNodes[5][5];
 
-//    QWidget* controllerWidget = ui->controller;
-//    connect(controllerWidget->findChild<QCheckBox*>("showStepsCheckBox"), SIGNAL(stateChanged(int)), this, SLOT(onShowStepsToggled(int)));
-//    connect(controllerWidget->findChild<QCheckBox*>("allowDiagonalCheckBox"), SIGNAL(stateChanged(int)), this, SLOT(onAllowDiagonalToggled(int)));
-//    connect(controllerWidget->findChild<QPushButton*>("pushButton"), SIGNAL(clicked()), this, SLOT(onClearButtonPressed()));
+    controller = new Controller(this);
+    controller -> setMinimumSize(220, 100);
 }
 
 MainWindow::~MainWindow()
