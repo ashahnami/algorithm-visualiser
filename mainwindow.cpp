@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(controller->algorithmDropdown, &QComboBox::currentIndexChanged, this, &MainWindow::onAlgorithmChange);
     connect(controller->showStepsCheckbox, &QCheckBox::stateChanged, this, &MainWindow::onShowStepsToggled);
     connect(controller->allowDiagonalCheckbox, &QCheckBox::stateChanged, this, &MainWindow::onAllowDiagonalToggled);
-    connect(controller->pushButton, &QPushButton::clicked, this, &::MainWindow::onButtonClicked);
+    connect(controller->pushButton, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
 }
 
 MainWindow::~MainWindow()
@@ -89,7 +89,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    drawing = true;
     handleDrawing(event);
     QWidget::mousePressEvent(event);
 }
@@ -104,7 +103,6 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    drawing = false;
     QWidget::mouseReleaseEvent(event);
 }
 
@@ -158,7 +156,7 @@ void MainWindow::handleDrawing(QMouseEvent *event)
     int y = pos.y() / squareSize;
     int ind = pathfinding->findNode(pathfinding->gridNodes[x][y], pathfinding->borderNodes);
 
-    if(drawing){
+    if(event->buttons() == Qt::LeftButton){
         if(currKey == Qt::Key_S){
 
             start = &pathfinding->gridNodes[x][y];

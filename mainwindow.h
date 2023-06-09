@@ -19,7 +19,6 @@ public:
     void handleDrawing(QMouseEvent *event);
     Node* start;
     Node* end;
-    bool drawing;
     int currKey;
     void startSearch();
     Controller *controller;
